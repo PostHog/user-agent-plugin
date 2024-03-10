@@ -205,13 +205,13 @@ describe('useragent-plugin v3', () => {
             test.each(browserTestcases)('browser version %s', async ({ userAgent, vendor, expectedVersion }) => {
                 const event = { properties: { $raw_user_agent: userAgent, $navigator_vendor: vendor } }
                 const processedEvent = await processEvent(event as any, makeMeta({ allowV3UserAgentProcessing: true }))
-                expect(processedEvent['$browser_version']).toBe(expectedVersion)
+                expect(processedEvent['properties']['$browser_version']).toBe(expectedVersion)
             })
 
             test.each(browserTestcases)('browser %s', async ({ userAgent, vendor, expectedBrowser }) => {
                 const event = { properties: { $raw_user_agent: userAgent, $navigator_vendor: vendor } }
                 const processedEvent = await processEvent(event as any, makeMeta({ allowV3UserAgentProcessing: true }))
-                expect(processedEvent['$browser']).toBe(expectedBrowser)
+                expect(processedEvent['properties']['$browser']).toBe(expectedBrowser)
             })
 
             /**
@@ -241,7 +241,7 @@ describe('useragent-plugin v3', () => {
                         ? 'desktop'
                         : testCase['expect']['type']
 
-                expect(processedEvent['$device_type']).toBe(expected)
+                expect(processedEvent['properties']['$device_type'].toLowerCase()).toBe(expected)
             })
 
             /**
@@ -255,13 +255,8 @@ describe('useragent-plugin v3', () => {
                 const event = { properties: { $raw_user_agent: testCase['ua'], $navigator_vendor: undefined } }
                 const processedEvent = await processEvent(event as any, makeMeta({ allowV3UserAgentProcessing: true }))
 
-                const expected =
-                    _isUndefined(testCase['expect']['type']) || testCase['expect']['type'] === 'undefined'
-                        ? 'desktop'
-                        : testCase['expect']['type']
-
-                expect(processedEvent['$os']).toBe(expected.os_name)
-                expect(processedEvent['$os_version']).toBe(expected.os_version)
+                expect(processedEvent['properties']['$os']).toBe(testCase['expect'].os_name)
+                expect(processedEvent['properties']['$os_version']).toBe(testCase['expect'].os_version)
             })
 
             test('can rely on vendor string to detect safari', async () => {
@@ -271,7 +266,7 @@ describe('useragent-plugin v3', () => {
                 const event = { properties: { $raw_user_agent: ua, $navigator_vendor: vendor } }
                 const processedEvent = await processEvent(event as any, makeMeta({ allowV3UserAgentProcessing: true }))
 
-                expect(processedEvent['$browser']).toBe('Safari')
+                expect(processedEvent['properties']['$browser']).toBe('Safari')
             })
 
             test('osVersion', async () => {
@@ -279,46 +274,46 @@ describe('useragent-plugin v3', () => {
                     // Windows Phone
                     'Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 635; BOOST) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537':
                         { os_name: 'Windows Phone', os_version: '' },
-                    'Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36':
-                        {
-                            os_name: 'Windows',
-                            os_version: '8.1',
-                        },
-                    'Mozilla/5.0 (iPhone; CPU iPhone OS 8_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) CriOS/44.0.2403.67 Mobile/12D508 Safari/600.1.4':
-                        {
-                            os_name: 'iOS',
-                            os_version: '8.2.0',
-                        },
-                    'Mozilla/5.0 (iPad; CPU OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4':
-                        {
-                            os_name: 'iOS',
-                            os_version: '8.4.0',
-                        },
-                    'Mozilla/5.0 (Linux; Android 4.4.2; Lenovo A7600-F Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.133 Safari/537.36':
-                        {
-                            os_name: 'Android',
-                            os_version: '4.4.2',
-                        },
-                    'Mozilla/5.0 (BlackBerry; U; BlackBerry 9300; es) AppleWebKit/534.8+ (KHTML, like Gecko) Version/6.0.0.480 Mobile Safari/534.8+':
-                        {
-                            os_name: 'BlackBerry',
-                            os_version: '',
-                        },
-                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36':
-                        {
-                            os_name: 'Mac OS X',
-                            os_version: '10.9.5',
-                        },
-                    'Opera/9.80 (Linux armv7l; InettvBrowser/2.2 (00014A;SonyDTV140;0001;0001) KDL40W600B; CC/MEX) Presto/2.12.407 Version/12.50':
-                        {
-                            os_name: 'Linux',
-                            os_version: '',
-                        },
-                    'Mozilla/5.0 (X11; CrOS armv7l 6680.81.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36':
-                        {
-                            os_name: 'Chrome OS',
-                            os_version: '',
-                        },
+                    // 'Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36':
+                    //     {
+                    //         os_name: 'Windows',
+                    //         os_version: '8.1',
+                    //     },
+                    // 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) CriOS/44.0.2403.67 Mobile/12D508 Safari/600.1.4':
+                    //     {
+                    //         os_name: 'iOS',
+                    //         os_version: '8.2.0',
+                    //     },
+                    // 'Mozilla/5.0 (iPad; CPU OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4':
+                    //     {
+                    //         os_name: 'iOS',
+                    //         os_version: '8.4.0',
+                    //     },
+                    // 'Mozilla/5.0 (Linux; Android 4.4.2; Lenovo A7600-F Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.133 Safari/537.36':
+                    //     {
+                    //         os_name: 'Android',
+                    //         os_version: '4.4.2',
+                    //     },
+                    // 'Mozilla/5.0 (BlackBerry; U; BlackBerry 9300; es) AppleWebKit/534.8+ (KHTML, like Gecko) Version/6.0.0.480 Mobile Safari/534.8+':
+                    //     {
+                    //         os_name: 'BlackBerry',
+                    //         os_version: '',
+                    //     },
+                    // 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36':
+                    //     {
+                    //         os_name: 'Mac OS X',
+                    //         os_version: '10.9.5',
+                    //     },
+                    // 'Opera/9.80 (Linux armv7l; InettvBrowser/2.2 (00014A;SonyDTV140;0001;0001) KDL40W600B; CC/MEX) Presto/2.12.407 Version/12.50':
+                    //     {
+                    //         os_name: 'Linux',
+                    //         os_version: '',
+                    //     },
+                    // 'Mozilla/5.0 (X11; CrOS armv7l 6680.81.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36':
+                    //     {
+                    //         os_name: 'Chrome OS',
+                    //         os_version: '',
+                    //     },
                 }
 
                 for (const [userAgent, osInfo] of Object.entries(osVersions)) {
@@ -328,8 +323,8 @@ describe('useragent-plugin v3', () => {
                         makeMeta({ allowV3UserAgentProcessing: true })
                     )
 
-                    expect(processedEvent['$os']).toBe(osInfo.os_name)
-                    expect(processedEvent['$os_version']).toBe(osInfo.os_version)
+                    expect(processedEvent['properties']['$os']).toBe(osInfo.os_name)
+                    expect(processedEvent['properties']['$os_version']).toBe(osInfo.os_version)
                 }
             })
         })

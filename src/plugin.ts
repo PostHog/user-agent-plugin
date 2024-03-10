@@ -114,7 +114,7 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     }
 
     if (hasRawUserAgentKey && !hasUserAgent) {
-        return userAgentV3(event, userAgent, global)
+        return userAgentV3(event, event.properties['$raw_user_agent'], global)
     }
 
     const eventProperties = Object.keys(event.properties)
