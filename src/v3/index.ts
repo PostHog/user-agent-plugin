@@ -20,12 +20,8 @@ export const userAgentV3 = (
 
     event.properties['$device'] = detectDevice(userAgent)
     event.properties['$device_type'] = detectDeviceType(userAgent)
-    // the only difference from posthog-js...
-    // in theory posthog-js has an opera property on the window object
-    // but, we never assign it
-    // TODO is it added by opera?
-    event.properties['$browser'] = detectBrowser(userAgent, vendor, undefined)
-    event.properties['$browser_version'] = detectBrowserVersion(userAgent, vendor, undefined)
+    event.properties['$browser'] = detectBrowser(userAgent, vendor)
+    event.properties['$browser_version'] = detectBrowserVersion(userAgent, vendor)
     const detectedOS = detectOS(userAgent)
     event.properties['$os'] = detectedOS[0]
     event.properties['$os_version'] = detectedOS[1]
