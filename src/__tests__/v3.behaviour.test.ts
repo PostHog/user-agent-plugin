@@ -35,7 +35,7 @@ describe('useragent-plugin v3', () => {
             { ...event } as unknown as PluginEventExtra,
             makeMeta({ allowV3UserAgentProcessing: true })
         )
-        expect(Object.keys(processedEvent.properties)).toHaveLength(2)
+        expect(Object.keys(processedEvent.properties)).toEqual(['$user_agent_plugin_disable', '$raw_user_agent'])
     })
 
     describe(`testcases from posthog-js`, () => {
