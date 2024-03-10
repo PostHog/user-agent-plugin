@@ -23,9 +23,6 @@ describe('useragent-plugin v3', () => {
         expect(Object.keys(processedEvent.properties)).toStrictEqual(Object.keys(event.properties))
     })
 
-    test.todo('should not process event when $raw_user_agent is missing')
-    test.todo('should not process event when $raw_user_agent is empty')
-
     describe(`testcases from posthog-js`, () => {
         describe('user agent', () => {
             // can use https://user-agents.net/ or $raw_user_agent property on events to get new test cases

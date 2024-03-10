@@ -95,8 +95,9 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
         delete event.properties.$user_agent
     }
 
-    const hasRawUserAgentKey = availableKeysOfEvent.includes('$raw_user_agent')
-    const hasUserAgent = userAgent.length > 0
+    const hasRawUserAgentKey =
+        availableKeysOfEvent.includes('$raw_user_agent') && event.properties['$raw_user_agent'].trim().length > 0
+    const hasUserAgent = userAgent.trim().length > 0
     if (!hasRawUserAgentKey && !hasUserAgent) {
         if (global.debugMode) {
             console.warn(`UserAgentPlugin.processEvent(): $useragent is empty`)
