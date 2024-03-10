@@ -11,11 +11,12 @@ We want to move user agent parsing out of posthog-js for several reasons
 
 This does not attempt to improve on user agent detection
 
-E.g. posthog-js detects OS as "Linx" and not "Arch Linux" or "Ubuntu" or "Fedora" etc.
+E.g. posthog-js detects OS as "Linux" and not "Arch Linux" or "Ubuntu" or "Fedora" etc.
 
-It attempts to match exactly the same user agent detection as posthog-js
+V3 attempts to match exactly the same user agent detection as posthog-js
+
 This will let us make this plugin global (like geo-ip)
-And then remove the code from posthog-js
+so that we can then remove the code from posthog-js
 
 Future versions might improve on user agent detection, but should do so in a way that is backwards compatible with the current detection
 Since folk might have insights that rely on OS always being Linux
