@@ -12,9 +12,6 @@ export const userAgentV3 = (
         debugMode: boolean
     }
 ): PluginEventExtra => {
-    // only here to make sure the v3 tests are checking this once this starts to fire
-    // userAgentV2(event, userAgent, global)
-
     const vendor = event.properties['$navigator_vendor']
 
     event.properties['$device'] = detectDevice(userAgent)
