@@ -1,4 +1,3 @@
-import { detect } from 'detect-browser'
 import { PluginEvent, Meta } from '@posthog/plugin-scaffold'
 import { userAgentV3 } from './v3'
 import { userAgentV2 } from './v2'
@@ -7,6 +6,8 @@ export type UserAgentPluginConfiguration = {
     enable: string
     enableSegmentAnalyticsJs?: string
     overrideUserAgentDetails?: string
+    // if provided then the plugin will process $raw_user_agent or $useragent
+    allowV3UserAgentProcessing?: string
     debugMode?: string
 }
 
@@ -16,6 +17,7 @@ export type UserAgentMetaInput = {
         enabledPlugin: boolean
         enableSegmentAnalyticsJs: boolean
         overrideUserAgentDetails: boolean
+        allowV3UserAgentProcessing: boolean
         debugMode: boolean
     }
 }
@@ -33,6 +35,7 @@ export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
         global.enableSegmentAnalyticsJs = config.enableSegmentAnalyticsJs === 'true'
         global.overrideUserAgentDetails = config.overrideUserAgentDetails === 'true'
+        global.allowV3UserAgentProcessing = config.allowV3UserAgentProcessing === 'true'
         global.debugMode = config.debugMode === 'true'
     } catch (e: unknown) {
         throw new Error('Failed to read the configuration')
@@ -66,7 +69,10 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
             availableKeysOfEvent.includes('$user-agent') ||
             availableKeysOfEvent.includes('$useragent') ||
             availableKeysOfEvent.includes('$user_agent')
-        if (!hasUserAgentKey) {
+        // if v3 processing is not enabled (the default),
+        // and there is no user agent
+        // then we can exit here
+        if (!global.allowV3UserAgentProcessing && !hasUserAgentKey) {
             if (global.debugMode) {
                 console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
             }
@@ -94,6 +100,14 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     if (!hasRawUserAgentKey && !hasUserAgent) {
         if (global.debugMode) {
             console.warn(`UserAgentPlugin.processEvent(): $useragent is empty`)
+        }
+
+        return event
+    }
+
+    if (!hasRawUserAgentKey && !hasUserAgent) {
+        if (global.debugMode) {
+            console.warn(`UserAgentPlugin.processEvent(): neither $raw_user_agent or $useragent was provided`)
         }
 
         return event
