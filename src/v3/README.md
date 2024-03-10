@@ -3,7 +3,7 @@
 We want to move user agent parsing out of posthog-js for several reasons
 
 1. it is a significant portion of the bundle size
-2. so, we're having to do code folk which makes it hard to maintain
+2. so, we're having to do code golf which makes it hard to maintain
 3. user agent detection doesn't then apply to other SDKs
 4. we can't easily change the user agent detection without releasing a new version of posthog-js and waiting for adoption
 
