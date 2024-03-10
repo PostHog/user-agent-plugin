@@ -22,9 +22,9 @@ export const userAgentV3 = (
     event.properties['$device_type'] = detectDeviceType(userAgent)
     event.properties['$browser'] = detectBrowser(userAgent, vendor)
     event.properties['$browser_version'] = detectBrowserVersion(userAgent, vendor)
-    const detectedOS = detectOS(userAgent)
-    event.properties['$os'] = detectedOS[0]
-    event.properties['$os_version'] = detectedOS[1]
+    const [osName, osVersion] = detectOS(userAgent)
+    event.properties['$os'] = osName
+    event.properties['$os_version'] = osVersion
 
     // posthog-js does not add $browser_type, so we won't add it here in v3
     //event.properties['$browser_type'] = agentInfo.type
