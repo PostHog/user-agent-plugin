@@ -1,4 +1,4 @@
-import { processEvent } from '../plugin'
+import { PluginEventExtra, processEvent } from '../plugin'
 import { makeMeta } from './index'
 import { userAgentV2 } from '../v2'
 import uaParserDeviceTestCases from './specs/device.test.json'
@@ -21,6 +21,21 @@ describe('useragent-plugin v3', () => {
         const event = { properties: { $raw_user_agent: 'present' } }
         const processedEvent = await processEvent(event as any, makeMeta({ allowV3UserAgentProcessing: true }))
         expect(Object.keys(processedEvent.properties)).toStrictEqual(Object.keys(event.properties))
+    })
+
+    test('can skip processing with $user_agent_plugin_disable', async () => {
+        const event = {
+            properties: {
+                $user_agent_plugin_disable: true,
+                $raw_user_agent:
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            },
+        }
+        const processedEvent = await processEvent(
+            { ...event } as unknown as PluginEventExtra,
+            makeMeta({ allowV3UserAgentProcessing: true })
+        )
+        expect(Object.keys(processedEvent.properties)).toHaveLength(2)
     })
 
     describe(`testcases from posthog-js`, () => {

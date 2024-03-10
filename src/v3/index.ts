@@ -12,6 +12,10 @@ export const userAgentV3 = (
         debugMode: boolean
     }
 ): PluginEventExtra => {
+    if (event.properties['$user_agent_plugin_disable']) {
+        return event
+    }
+
     const vendor = event.properties['$navigator_vendor']
 
     event.properties['$device'] = detectDevice(userAgent)
