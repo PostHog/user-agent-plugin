@@ -6,37 +6,20 @@ import {
     StorageExtension,
     UtilsExtension,
 } from '@posthog/plugin-scaffold'
-import { processEvent, UserAgentMetaInput } from '../plugin'
+import { processEvent } from '../plugin'
+import { makeMeta } from './index'
+import { userAgentV3 } from '../v3'
 
-function makeMeta(options?: {
-    enable?: boolean
-    enableSegmentAnalyticsJs?: boolean
-    overrideUserAgentDetails?: boolean
-    debugMode?: boolean
-}): Meta<UserAgentMetaInput> {
-    return {
-        cache: {} as CacheExtension,
-        storage: {} as StorageExtension,
-        global: {
-            enabledPlugin: options?.enable ?? true,
-            enableSegmentAnalyticsJs: options?.enableSegmentAnalyticsJs ?? false,
-            overrideUserAgentDetails: options?.overrideUserAgentDetails ?? true,
-            debugMode: options?.debugMode ?? false,
-        },
-        config: {
-            enable: options?.enable ? 'true' : 'false',
-            enableSegmentAnalyticsJs: options?.enableSegmentAnalyticsJs ? 'true' : 'false',
-            overrideUserAgentDetails: options?.overrideUserAgentDetails ? 'true' : 'false',
-        },
-        attachments: {},
-        jobs: {},
-        metrics: {},
-        geoip: {} as GeoIPExtension,
-        utils: {} as UtilsExtension,
-    }
-}
+jest.mock('../v3/index', () => ({
+    userAgentV3: jest.fn(),
+}))
 
-describe('useragent-plugin', () => {
+describe('useragent-plugin v2', () => {
+    afterEach(() => {
+        // v2 should never call the v3 code
+        expect(userAgentV3).not.toHaveBeenCalled()
+    })
+
     test('should not process event when disabled', async () => {
         const event = { properties: {} }
         const processedEvent = await processEvent(event as any, makeMeta())
