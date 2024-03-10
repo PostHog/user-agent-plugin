@@ -3,7 +3,8 @@ import { makeMeta } from './index'
 import { userAgentV2 } from '../v2'
 import uaParserDeviceTestCases from './specs/device.test.json'
 import uaParserOSTestCases from './specs/os-test.json'
-import uaParserBrowserTestCases from './specs/browser.test.json'
+// TODO this set of test cases aren't used in posthog-js but we should use them
+// import uaParserBrowserTestCases from './specs/browser.test.json'
 import { _isUndefined } from '../v3/user-agent-utils'
 
 jest.mock('../v2/index', () => ({
