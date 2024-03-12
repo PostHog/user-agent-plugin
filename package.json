@@ -1,6 +1,6 @@
 {
     "name": "useragent-plugin",
-    "version": "2.0.2",
+    "version": "2.1.0",
     "description": "Automatically attach detailed browser details to the event when $useragent property exists",
     "main": "dist/index.js",
     "files": [
@@ -11,9 +11,10 @@
     ],
     "scripts": {
         "test": "jest",
-        "build": "rm -rf dist && npx swc src/plugin.ts -o dist/index.js --config-file .swcrc",
+        "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js",
         "prepublishOnly": "npm run build",
-        "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\""
+        "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\"",
+        "prepare": "husky"
     },
     "keywords": [
         "posthog",
@@ -27,14 +28,13 @@
     "license": "MIT",
     "devDependencies": {
         "@posthog/plugin-scaffold": "^0.12.10",
-        "@swc/cli": "^0.3.10",
-        "@swc/core": "^1.4.6",
-        "@swc/jest": "^0.2.36",
         "@types/jest": "^27.0.3",
+        "esbuild": "^0.20.1",
         "husky": "^9.0.11",
         "jest": "^27.4.5",
         "lint-staged": "^15.2.2",
         "prettier": "^3.2.5",
+        "ts-jest": "^27.1.5",
         "tslib": "^2.6.2"
     },
     "dependencies": {
@@ -44,10 +44,5 @@
         "src/**/*.{ts,tsx,js,json}": [
             "format"
         ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run build && git add -f dist"
-        }
     }
 }

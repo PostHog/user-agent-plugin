@@ -1,7 +1,7 @@
 module.exports = {
     testEnvironment: 'node',
     transform: {
-        '^.+\\.tsx?$': '@swc/jest',
+        '^.+\\.tsx?$': 'ts-jest',
     },
     testRegex: '(/__test__/.*|(\\.|/)(test|spec))\\.tsx?$',
     testPathIgnorePatterns: ['/node_modules/', '/dist/', '/types/'],
