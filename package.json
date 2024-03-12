@@ -30,11 +30,11 @@
     "@posthog/plugin-scaffold": "^0.12.10",
     "@types/jest": "^27.0.3",
     "esbuild": "^0.20.1",
-    "esbuild-jest": "^0.5.0",
     "husky": "^9.0.11",
     "jest": "^27.4.5",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
+    "ts-jest": "^27.1.5",
     "tslib": "^2.6.2"
   },
   "dependencies": {
