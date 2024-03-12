@@ -29,9 +29,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/.pnpm/detect-browser@5.3.0/node_modules/detect-browser/index.js
+// node_modules/detect-browser/index.js
 var require_detect_browser = __commonJS({
-  "node_modules/.pnpm/detect-browser@5.3.0/node_modules/detect-browser/index.js"(exports2) {
+  "node_modules/detect-browser/index.js"(exports2) {
     "use strict";
     var __spreadArray = exports2 && exports2.__spreadArray || function(to, from, pack) {
       if (pack || arguments.length === 2)
