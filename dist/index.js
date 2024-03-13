@@ -575,6 +575,9 @@ var userAgentV3 = (event, userAgent, global) => {
   if (event.properties["$user_agent_plugin_disable"]) {
     return event;
   }
+  if (global.debugMode) {
+    console.debug("UserAgentPlugin.userAgentV3(): Processing event");
+  }
   const vendor = event.properties["$navigator_vendor"];
   event.properties["$device"] = detectDevice(userAgent);
   event.properties["$device_type"] = detectDeviceType(userAgent);

@@ -85,7 +85,9 @@ describe('plugin validation', () => {
         } as Partial<PluginEventExtra>
         const meta = makeMeta({ allowV3UserAgentProcessing: false, overrideUserAgentDetails: false })
         const result = await processEvent(event as PluginEventExtra, meta)
-        expect(result).toEqual(event)
+        expect(result.properties).toEqual({
+            $browser: 'Chrome',
+        })
     })
 
     test('v3 - should not process event if has $browser and overrideUserAgentDetails is false', async () => {
@@ -97,6 +99,9 @@ describe('plugin validation', () => {
         } as Partial<PluginEventExtra>
         const meta = makeMeta({ allowV3UserAgentProcessing: true, overrideUserAgentDetails: false })
         const result = await processEvent(event as PluginEventExtra, meta)
-        expect(result).toEqual(event)
+        expect(result.properties).toEqual({
+            $browser: 'Chrome',
+            $raw_user_agent: 'something',
+        })
     })
 })

@@ -16,6 +16,10 @@ export const userAgentV3 = (
         return event
     }
 
+    if (global.debugMode) {
+        console.debug('UserAgentPlugin.userAgentV3(): Processing event')
+    }
+
     const vendor = event.properties['$navigator_vendor']
 
     event.properties['$device'] = detectDevice(userAgent)
