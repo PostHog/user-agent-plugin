@@ -575,9 +575,6 @@ var userAgentV3 = (event, userAgent, global) => {
   if (event.properties["$user_agent_plugin_disable"]) {
     return event;
   }
-  if (global.debugMode) {
-    console.debug("UserAgentPlugin.userAgentV3(): Processing event");
-  }
   const vendor = event.properties["$navigator_vendor"];
   event.properties["$device"] = detectDevice(userAgent);
   event.properties["$device_type"] = detectDeviceType(userAgent);
@@ -586,7 +583,9 @@ var userAgentV3 = (event, userAgent, global) => {
   const [osName, osVersion] = detectOS(userAgent);
   event.properties["$os"] = osName;
   event.properties["$os_version"] = osVersion;
-  event.properties["$processed_by_user_agent_plugin"] = true;
+  if (global.debugMode) {
+    event.properties["$processed_by_user_agent_plugin"] = true;
+  }
   return event;
 };
 
