@@ -10,7 +10,8 @@
         {
             "key": "overrideUserAgentDetails",
             "name": "Can override existing browser related properties of event?",
-            "type": "string",
+            "type": "choice",
+            "choices": ["false", "true"],
             "hint": "If the ingested event already have $browser $browser_version properties in combination with $useragent the $browser, $browser_version properties will be re-populated with the value of $useragent",
             "default": "false",
             "required": false
@@ -28,6 +29,22 @@
             "key": "debugMode",
             "type": "choice",
             "hint": "Enable debug mode to log when the plugin is unable to extract values from the user agent",
+            "choices": ["false", "true"],
+            "default": "false",
+            "required": false
+        },
+        {
+            "key": "debugMode",
+            "type": "choice",
+            "hint": "Enable debug mode to log when the plugin is unable to extract values from the user agent",
+            "choices": ["false", "true"],
+            "default": "false",
+            "required": false
+        },
+        {
+            "key": "allowV3UserAgentProcessing",
+            "type": "choice",
+            "hint": "EXPERIMENTAL: Enable v3 user agent processing, this allows us to replace posthog-js user agent processing with this user agent plugin",
             "choices": ["false", "true"],
             "default": "false",
             "required": false
