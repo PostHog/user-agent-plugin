@@ -114,10 +114,6 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
         return event
     }
 
-    if (hasRawUserAgentKey && !hasUserAgent) {
-        return userAgentV3(event, event.properties['$raw_user_agent'], global)
-    }
-
     const eventProperties = Object.keys(event.properties)
     const hasBrowserProperties = eventProperties.some((value: string) =>
         ['$browser', '$browser_version', '$os', '$device', '$device_type'].includes(value)
@@ -131,6 +127,10 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
         }
 
         return event
+    }
+
+    if (hasRawUserAgentKey && !hasUserAgent) {
+        return userAgentV3(event, event.properties['$raw_user_agent'], global)
     }
 
     return userAgentV2(event, userAgent, global)

@@ -75,4 +75,28 @@ describe('plugin validation', () => {
             },
         })
     })
+
+    test('v2 - should not process event if has $browser and overrideUserAgentDetails is false', async () => {
+        const event = {
+            properties: {
+                $browser: 'Chrome',
+                $user_agent: 'something',
+            },
+        } as Partial<PluginEventExtra>
+        const meta = makeMeta({ allowV3UserAgentProcessing: false, overrideUserAgentDetails: false })
+        const result = await processEvent(event as PluginEventExtra, meta)
+        expect(result).toEqual(event)
+    })
+
+    test('v3 - should not process event if has $browser and overrideUserAgentDetails is false', async () => {
+        const event = {
+            properties: {
+                $browser: 'Chrome',
+                $raw_user_agent: 'something',
+            },
+        } as Partial<PluginEventExtra>
+        const meta = makeMeta({ allowV3UserAgentProcessing: true, overrideUserAgentDetails: false })
+        const result = await processEvent(event as PluginEventExtra, meta)
+        expect(result).toEqual(event)
+    })
 })

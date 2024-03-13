@@ -29,5 +29,7 @@ export const userAgentV3 = (
     // posthog-js does not add $browser_type, so we won't add it here in v3
     //event.properties['$browser_type'] = agentInfo.type
 
+    event.properties['$processed_by_user_agent_plugin'] = true
+
     return event
 }

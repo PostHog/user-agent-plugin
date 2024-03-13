@@ -583,6 +583,7 @@ var userAgentV3 = (event, userAgent, global) => {
   const [osName, osVersion] = detectOS(userAgent);
   event.properties["$os"] = osName;
   event.properties["$os_version"] = osVersion;
+  event.properties["$processed_by_user_agent_plugin"] = true;
   return event;
 };
 
@@ -688,9 +689,6 @@ async function processEvent(event, { global }) {
     }
     return event;
   }
-  if (hasRawUserAgentKey && !hasUserAgent) {
-    return userAgentV3(event, event.properties["$raw_user_agent"], global);
-  }
   const eventProperties = Object.keys(event.properties);
   const hasBrowserProperties = eventProperties.some(
     (value) => ["$browser", "$browser_version", "$os", "$device", "$device_type"].includes(value)
@@ -702,6 +700,9 @@ async function processEvent(event, { global }) {
       );
     }
     return event;
+  }
+  if (hasRawUserAgentKey && !hasUserAgent) {
+    return userAgentV3(event, event.properties["$raw_user_agent"], global);
   }
   return userAgentV2(event, userAgent, global);
 }
