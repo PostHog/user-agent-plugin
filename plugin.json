@@ -34,14 +34,6 @@
             "required": false
         },
         {
-            "key": "debugMode",
-            "type": "choice",
-            "hint": "Enable debug mode to log when the plugin is unable to extract values from the user agent",
-            "choices": ["false", "true"],
-            "default": "false",
-            "required": false
-        },
-        {
             "key": "allowV3UserAgentProcessing",
             "type": "choice",
             "hint": "EXPERIMENTAL: Enable v3 user agent processing, this allows us to replace posthog-js user agent processing with this user agent plugin",
